@@ -1,0 +1,8 @@
+<div class="center">
+  <p *ngIf="!nowLoading; else loader">{{ randomNumber }}</p>
+  <button (click)="onGetRandomClick()">getRandom</button>
+</div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

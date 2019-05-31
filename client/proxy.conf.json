@@ -1,0 +1,20 @@
+{
+  "/api_v1/*": {
+    "target": "http://127.0.0.1:3000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/uploads/*": {
+    "target": "http://127.0.0.1:3000",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/api_v2/*": {
+    "target": "http://127.0.0.1:4000/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}
