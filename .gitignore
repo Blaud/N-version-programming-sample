@@ -1,3 +1,4 @@
 client/.editorconfig
 serverNodeJS/package-lock.json
 client/package-lock.json
+.vscode

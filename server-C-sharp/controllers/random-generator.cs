@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using Unosquare.Labs.EmbedIO;
 using Unosquare.Labs.EmbedIO.Constants;
 using Unosquare.Labs.EmbedIO.Modules;
+using System.Threading;
+
 
 namespace serverC_sharp.controllers
 {
-    class RandomGenerator :WebApiController
+    class RandomGenerator : WebApiController
     {
         Random random = new Random();
+        bool isNowCrashed = false;
         IHttpContext context;
         // You need to add a default constructor where the first argument
         // is an IHttpContext
@@ -30,7 +33,25 @@ namespace serverC_sharp.controllers
             try
             {
                 HttpContext.Response.Headers.Set("Access-Control-Allow-Origin", "*");
-                return await context.JsonResponseAsync("{\"random\": \"" + random.NextDouble() + "\", \"server\": \"c#\"}");
+
+                if (random.NextDouble() > 0.7)
+                {
+                    Console.WriteLine("crash simulation");
+                    isNowCrashed = true;
+
+                    await Task.Delay(TimeSpan.FromSeconds(10)).ContinueWith((task) =>
+                    {
+                        isNowCrashed = false;
+                    });
+                    return await context.JsonExceptionResponseAsync(new Exception("Timed out"), System.Net.HttpStatusCode.Forbidden, true, default(CancellationToken));
+                }
+                else
+                {
+                    if (isNowCrashed)
+                        return await context.JsonExceptionResponseAsync(new Exception("Timed out"), System.Net.HttpStatusCode.Forbidden, true, default(CancellationToken));
+                    else
+                        return await context.JsonResponseAsync("{\"random\": \"" + random.NextDouble() + "\", \"server\": \"c#\"}");
+                }
                 // return await Ok("{\"random: \""+random.NextDouble()+ "\", \"server\": \"c#\"}");
             }
             catch (Exception ex)

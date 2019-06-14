@@ -1,6 +1,12 @@
 <div class="center">
   <p *ngIf="!nowLoading; else loader">{{ randomNumber }}</p>
   <button (click)="onGetRandomClick()">getRandom</button>
+  <p>
+    awailability = {{ successResponces / (failResponces + successResponces) }}
+  </p>
+  <p>failResponces = {{ failResponces }}</p>
+  <p>successResponces = {{ successResponces }}</p>
+  <p>awgTimeToRestore = {{ summRestoreTime / failResponces }}</p>
 </div>
 
 <ng-template #loader>
